@@ -4,16 +4,25 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
 	"github.com/tony24681379/402/config"
+	"github.com/tony24681379/402/middleware"
+	"github.com/tony24681379/402/route"
 )
 
 func main() {
 	config := config.Config()
 	g := gin.New()
 	g.Use(gin.Recovery())
+	g.Use(middleware.Logger(3 * time.Second))
+
+	err := route.InitRoutes(g)
+	if err != nil {
+		glog.Fatal(err)
+	}
 
 	glog.Info("serve port", config.Port)
 	server := &http.Server{
