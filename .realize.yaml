@@ -1,0 +1,59 @@
+settings:
+  legacy:
+    force: true
+    interval: 100ms
+server:
+  status: true
+  open: false
+  port: 5002
+  host: localhost
+schema:
+- name: 402
+  path: .
+  commands:
+    run: 
+      status: true
+  args:
+  - -v=4
+  watcher:
+    paths:
+    - /
+    extensions:
+    - go
+    - yaml
+    - json
+    ignored_paths:
+    - .git
+    - vendor
+- name: 402-test
+  path: .
+  commands:
+    test:
+      output: true
+      status: true
+      args:
+      - -coverprofile=coverage.out
+    vet:
+      status: true
+  watcher:
+    paths:
+    - /
+    extensions:
+    - go
+    - yaml
+    - json
+    ignored_paths:
+    - .git
+    - vendor
+    scripts:
+      - type: before
+        command: docker run -d --name mongotest -p 27017:27017 mongo:3.6.3
+        global: true
+        output: true
+      - type: before
+        command: go test ./... -cover -count=1
+        output: true
+      - type: after
+        command: docker rm -f mongotest
+        global: true
+        output: true
