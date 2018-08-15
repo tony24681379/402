@@ -6,26 +6,28 @@ import (
 	"github.com/globalsign/mgo/bson"
 )
 
+const ModelLocation string = "locations"
+
+type Location struct {
+	ID        bson.ObjectId `bson:"_id,omitempty" json:"_id"`
+	Geo       *Geo          `bson:"geo" json:"geo"`
+	CarSpace  `bson:",inline" json:",inline"`
+	CarPark   `bson:",inline" json:",inline"`
+	CreatedAt time.Time `bson:"createdAt" json:"createdAt"`
+	UpdatedAt time.Time `bson:"updatedAt" json:"updatedAt"`
+}
+
 type CarSpace struct {
-	ID        bson.ObjectId `bson:"_id,omitempty" json:"carSpaceId"`
-	Name      string        `bson:"name" json:"name"`
-	Location  *GeoJson      `bson:"location" json:"location"`
-	State     int           `bson:"state" json:"state"`
-	UserID    bson.ObjectId `bson:"userId,omitempty" json:"userId,omitempty"`
-	CreatedAt time.Time     `bson:"createdAt" json:"createdAt"`
-	UpdatedAt time.Time     `bson:"updatedAt" json:"updatedAt"`
+	Name   string        `bson:"name,omitempty" json:"name,omitempty"`
+	State  int           `bson:"state,omitempty" json:"state"`
+	UserID bson.ObjectId `bson:"userId,omitempty" json:"userId,omitempty"`
 }
 
 type CarPark struct {
-	ID        bson.ObjectId `bson:"_id,omitempty" json:"carParkId"`
-	Name      string        `bson:"name" json:"name"`
-	Location  *GeoJson      `bson:"location" json:"location"`
-	CarSpace  *CarSpace     `bson:"carSpace" json:"carSpace"`
-	CreatedAt time.Time     `bson:"createdAt" json:"createdAt"`
-	UpdatedAt time.Time     `bson:"updatedAt" json:"updatedAt"`
+	CarSpace []*CarSpace `bson:"carSpace,omitempty" json:"carSpace,omitempty"`
 }
 
-type GeoJson struct {
+type Geo struct {
 	Type        string    `json:"-"`
 	Coordinates []float64 `json:"coordinates"`
 }

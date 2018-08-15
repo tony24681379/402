@@ -16,7 +16,7 @@ func Config() *Configs {
 	flag.Set("v", "2")
 	flag.CommandLine.Parse([]string{})
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.String("port", "3000", "serve port")
+	pflag.String("port", "4000", "serve port")
 	pflag.Parse()
 	viper.BindPFlags(pflag.CommandLine)
 
