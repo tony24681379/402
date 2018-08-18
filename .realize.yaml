@@ -15,6 +15,7 @@ schema:
       status: true
   args:
   - -v=4
+  - --mongo_url=127.0.0.1:27018
   watcher:
     paths:
     - /
