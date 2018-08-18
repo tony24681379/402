@@ -12,8 +12,7 @@ import (
 	"github.com/tony24681379/402/mongo"
 )
 
-func InitRoutes(g *gin.Engine) error {
-	mongoURL := "127.0.0.1:27018"
+func InitRoutes(g *gin.Engine, mongoURL string) error {
 	mongoDBName := "402"
 
 	s, err := mgo.Dial(mongoURL)

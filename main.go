@@ -19,7 +19,7 @@ func main() {
 	g.Use(gin.Recovery())
 	g.Use(middleware.Logger(3 * time.Second))
 
-	err := route.InitRoutes(g)
+	err := route.InitRoutes(g, config.MongoURL)
 	if err != nil {
 		glog.Fatal(err)
 	}
