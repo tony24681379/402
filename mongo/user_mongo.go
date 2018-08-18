@@ -29,7 +29,7 @@ func (d *UserDAO) FindUser(name string) (*model.User, error) {
 	defer ds.Close()
 	c := ds.DB(d.MongoDBName).C(model.ModelUsers)
 
-	err := c.Find(bson.M{"_id": name}).One(&u)
+	err := c.Find(bson.M{"name": name}).One(&u)
 	if err != nil {
 		glog.Error(err)
 		return nil, err
