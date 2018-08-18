@@ -146,7 +146,7 @@ func Logger(duration time.Duration) gin.HandlerFunc {
 				)
 			}
 		default:
-			glog.Infof("[GIN] |%s %3d %s| %12v | %s |%s  %s %-7s %s %s\n%s%s%s",
+			glog.Infof("[GIN] |%s %3d %s| %12v | %s |%s  %s %-7s %s\n%s%s%s",
 				statusColor, statusCode, reset,
 				latency,
 				clientIP,
