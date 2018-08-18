@@ -1,6 +1,8 @@
 package mongo
 
 import (
+	"time"
+
 	"github.com/globalsign/mgo/bson"
 	"github.com/golang/glog"
 	"github.com/tony24681379/402/model"
@@ -14,6 +16,9 @@ func (d *UserDAO) NewUser(u *model.User) error {
 	ds := d.MongoSession.Copy()
 	defer ds.Close()
 	c := ds.DB(d.MongoDBName).C(model.ModelUsers)
+
+	u.CreatedAt = time.Now()
+	u.UpdatedAt = time.Now()
 
 	err := c.Insert(u)
 	if err != nil {
