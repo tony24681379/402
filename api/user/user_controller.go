@@ -31,13 +31,8 @@ func (c *Controller) NewUser(ctx *gin.Context) {
 }
 func (c *Controller) Login(ctx *gin.Context) {
 	u := &model.User{}
-
-	if err := ctx.Bind(u); err != nil {
-		glog.Error(err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	user, err := c.UserDAO.FindUser(u)
+	name := ctx.Param("name")
+	user, err := c.UserDAO.FindUser(name)
 	if err != nil {
 		glog.Error(err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -47,6 +42,6 @@ func (c *Controller) Login(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "OK")
 
 	}
-	ctx.String(http.StatusBadRequest, "LoginFail")
+	ctx.String(http.StatusBadRequest, "")
 
 }

@@ -6,8 +6,6 @@ import (
 	"github.com/tony24681379/402/model"
 )
 
-const ModelUsers string = "users"
-
 type UserDAO struct {
 	Mongo
 }
@@ -25,12 +23,13 @@ func (d *UserDAO) NewUser(u *model.User) error {
 
 	return nil
 }
-func (d *UserDAO) FindUser(u *model.User) (*model.User, error) {
+func (d *UserDAO) FindUser(name string) (*model.User, error) {
 	ds := d.MongoSession.Copy()
+	u := &model.User{}
 	defer ds.Close()
 	c := ds.DB(d.MongoDBName).C(model.ModelUsers)
 
-	err := c.Find(bson.M{"_id": u.Name}).One(&u)
+	err := c.Find(bson.M{"_id": name}).One(&u)
 	if err != nil {
 		glog.Error(err)
 		return nil, err
