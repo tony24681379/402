@@ -1,6 +1,7 @@
 package mongo
 
 import (
+	"github.com/globalsign/mgo/bson"
 	"github.com/golang/glog"
 	"github.com/tony24681379/402/model"
 )
@@ -25,4 +26,30 @@ func (d *LocationDAO) NewLocation(l *model.Location) error {
 	}
 
 	return nil
+}
+
+func (d *LocationDAO) GetLocation(long, lat float64, scope int) ([]*model.Location, error) {
+	ds := d.MongoSession.Copy()
+	defer ds.Close()
+	c := ds.DB(d.MongoDBName).C(model.ModelLocation)
+
+	location := []*model.Location{}
+	err := c.Find(bson.M{
+		"geo": bson.M{
+			"$nearSphere": bson.M{
+				"$geometry": bson.M{
+					"type":        "Point",
+					"coordinates": []float64{long, lat},
+				},
+				"$maxDistance": scope,
+			},
+		},
+	}).All(&location)
+
+	if err != nil {
+		glog.Error(err)
+		return nil, err
+	}
+
+	return location, nil
 }

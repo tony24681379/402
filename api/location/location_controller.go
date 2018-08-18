@@ -2,6 +2,8 @@ package location
 
 import (
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
@@ -28,4 +30,35 @@ func (c *Controller) NewLocation(ctx *gin.Context) {
 		return
 	}
 	ctx.String(http.StatusOK, "OK")
+}
+
+func (c *Controller) GetLocation(ctx *gin.Context) {
+	distance, err := strconv.Atoi(ctx.Query("distance"))
+	if err != nil {
+		glog.Error(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	geo := ctx.Query("geo")
+	geoS := strings.Split(geo, ",")
+	long, err := strconv.ParseFloat(geoS[0], 64)
+	if err != nil {
+		glog.Error(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	lat, err := strconv.ParseFloat(geoS[1], 64)
+	if err != nil {
+		glog.Error(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	location, err := c.LocationDAO.GetLocation(long, lat, distance)
+	if err != nil {
+		glog.Error(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, location)
 }

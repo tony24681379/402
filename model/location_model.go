@@ -28,6 +28,6 @@ type CarPark struct {
 }
 
 type Geo struct {
-	Type        string    `json:"-"`
+	Type        string    `json:"type"`
 	Coordinates []float64 `json:"coordinates"`
 }
