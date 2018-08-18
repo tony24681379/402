@@ -10,7 +10,7 @@ import (
 )
 
 func InitRoutes(g *gin.Engine) error {
-	mongoURL := "127.0.0.1"
+	mongoURL := "127.0.0.1:27018"
 	mongoDBName := "402"
 
 	s, err := mgo.Dial(mongoURL)

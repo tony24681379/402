@@ -47,13 +47,13 @@ schema:
     - vendor
     scripts:
       - type: before
-        command: docker run -d --name mongotest -p 27017:27017 mongo:3.6.3
+        command: docker run -d --name mongo -p 27018:27017 mongo:3.6.3
         global: true
         output: true
       - type: before
         command: go test ./... -cover -count=1
         output: true
       - type: after
-        command: docker rm -f mongotest
+        command: docker rm -f mongo
         global: true
         output: true
