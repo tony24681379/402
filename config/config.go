@@ -18,7 +18,7 @@ func Config() *Configs {
 	flag.CommandLine.Parse([]string{})
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.String("port", "4000", "serve port")
-	pflag.String("mongo_url", "127.0.0.1:27017", "serve port")
+	pflag.String("mongo_url", "mongodb:27017", "serve port")
 	pflag.Parse()
 	viper.BindPFlags(pflag.CommandLine)
 
