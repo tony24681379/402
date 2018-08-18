@@ -25,13 +25,13 @@ func (c *Controller) NewLocation(ctx *gin.Context) {
 	}
 
 	l.Geo.Coordinates = []float64{l.Geo.Long, l.Geo.Lat}
-	err := c.LocationDAO.NewLocation(l)
+	l, err := c.LocationDAO.NewLocation(l)
 	if err != nil {
 		glog.Error(err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.String(http.StatusOK, "OK")
+	ctx.JSON(http.StatusOK, l)
 }
 
 func (c *Controller) GetLocation(ctx *gin.Context) {
