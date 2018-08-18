@@ -1,0 +1,20 @@
+version: "3"
+services: 
+  api:
+    image: tony24681379/402
+    ports:
+      - "4000:4000"
+    restart: always
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+  
+  mongodb:
+    image: mongo:3.6.3
+    restart: always
+    container_name: mongodb
+    volumes: 
+      - ~/data/db:/data/db
+    ports:
+      - "27017:27017"
