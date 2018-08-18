@@ -30,7 +30,6 @@ func (c *Controller) NewUser(ctx *gin.Context) {
 	ctx.String(http.StatusOK, "OK")
 }
 func (c *Controller) Login(ctx *gin.Context) {
-	u := &model.User{}
 	name := ctx.Param("name")
 	user, err := c.UserDAO.FindUser(name)
 	if err != nil {

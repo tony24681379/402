@@ -6,6 +6,8 @@ import (
 	"github.com/golang/glog"
 	"github.com/tony24681379/402/api/hello"
 	"github.com/tony24681379/402/api/location"
+	"github.com/tony24681379/402/api/user"
+
 	"github.com/tony24681379/402/mongo"
 )
 
@@ -22,6 +24,14 @@ func InitRoutes(g *gin.Engine) error {
 	hello.InitRoutes(g, &hello.Controller{})
 	location.InitRoutes(g, &location.Controller{
 		LocationDAO: &mongo.LocationDAO{
+			Mongo: mongo.Mongo{
+				MongoSession: s,
+				MongoDBName:  mongoDBName,
+			},
+		},
+	})
+	user.InitRoutes(g, &user.Controller{
+		UserDAO: &mongo.UserDAO{
 			Mongo: mongo.Mongo{
 				MongoSession: s,
 				MongoDBName:  mongoDBName,
