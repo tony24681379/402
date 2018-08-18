@@ -36,6 +36,7 @@ func (c *Controller) NewLocation(ctx *gin.Context) {
 
 func (c *Controller) GetLocation(ctx *gin.Context) {
 	distance, err := strconv.Atoi(ctx.DefaultQuery("distance", "5000"))
+
 	if err != nil {
 		glog.Error(err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -76,22 +77,22 @@ func (c *Controller) GetLocation(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, locations)
 }
 
-// func (c *Controller) UpdateLocation(ctx *gin.Context) {
+func (c *Controller) SetState(ctx *gin.Context) {
 
-// 	l := &model.Location{}
-// 	if err := ctx.Bind(l); err != nil {
-// 		glog.Error(err)
-// 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+	l := &model.Location{}
+	if err := ctx.Bind(l); err != nil {
+		glog.Error(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-// 	l.Geo.Coordinates = []float64{l.Geo.Long, l.Geo.Lat}
-// 	err := c.LocationDAO.UpdateLocation(l)
-// 	if err != nil {
-// 		glog.Error(err)
-// 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	ctx.String(http.StatusOK, "OK")
+	l.Geo.Coordinates = []float64{l.Geo.Long, l.Geo.Lat}
+	err := c.LocationDAO.UpdateLocation(l)
+	if err != nil {
+		glog.Error(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.String(http.StatusOK, "OK")
 
-// }
+}

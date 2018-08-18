@@ -67,3 +67,22 @@ func (d *LocationDAO) GetLocation(long, lat float64, state, scope int) ([]*model
 
 	return location, nil
 }
+func (d *LocationDAO) UpdateLocation(l *model.Location) error {
+	ds := d.MongoSession.Copy()
+	defer ds.Close()
+	c := ds.DB(d.MongoDBName).C(model.ModelLocation)
+	lmap := bson.M{}
+	idoi := bson.ObjectId(l.ID)
+
+	if l.State == 0 || l.State == 1 {
+		lmap["state"] = l.State
+	}
+	lmap["updatedAt"] = time.Now()
+
+	err := c.UpdateId(idoi, bson.M{"$set": l})
+	if err != nil {
+		glog.Error(err)
+		return err
+	}
+	return nil
+}
